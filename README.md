@@ -16,15 +16,10 @@ https://ala2020.vub.ac.be/papers/ALA2020_paper_5.pdf
 
 https://arxiv.org/abs/2006.04037
 
-There are variety of papers on reinforcement learning and university cources
+There are variety of papers on reinforcement learning:
 
 - A2C algorithm
 - PPO algorithm
-
-- Stanford RL cources on youtube
-- University of berkeley on youtube
-
-Data: I used the same data as in the papers.
 
 Description:
 
@@ -51,7 +46,7 @@ please follow papers, dataset is available as part of Kaggle competition at http
 
 python prepare_data.py
 
-There problem with this data, it is hard to make is reasonably even. Starting date of customer shopping sequence is random, but aligned with day of week. Next dates are calculated iusing days between shopping. Random date is picked from an dates interval. Once all these dates are calculated, volume of all shopping reaches some maximum and then does down. This is how training data looks like. I selected grocery only items from products list. 
+There problem with this data, it is hard to make is reasonably even. Starting date of customer shopping sequence is random, but aligned with day of week. Next dates are calculated using days between shopping. First, random date is picked from dates interval. Once all dates are calculated, volume of all shopping reaches some maximum and then does down. This is how training data looks like. I selected grocery only items from products list. 
 
 3. Training
 
