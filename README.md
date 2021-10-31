@@ -1,6 +1,6 @@
 # inventory_management
 
-This is implementing few papers about supply chain from the same authors
+This code implements few papers about supply chain from the same authors
 
 1. Scalable multi-product inventory control with lead time constraints using reinforcement learning
 
@@ -16,7 +16,7 @@ https://ala2020.vub.ac.be/papers/ALA2020_paper_5.pdf
 
 https://arxiv.org/abs/2006.04037
 
-There are variety of papers on reinforcement learning and univercity cources
+There are variety of papers on reinforcement learning and university cources
 
 - A2C algorithm
 - PPO algorithm
@@ -31,8 +31,6 @@ Description:
 Supply chain can have many objectives to achieve optimal metrics: lowest possible inventory level without having stockouts. This reduces amount of thrown away items. Another objective is to make quantity of items across all products as even as possible. Other problems with solution in the paper is addressing both stores and warehouses and different lead times. I have not coded this yet. Beside this, I saw in other papers could be some optimal prices in the store.   
 
 This is reinforcement learnig problem and it is implemented in a actor critic style with separate networks. I coded A2C, A2C-mod as suggested in the paper and PPO. Actor is a policy network and prediction uses just it.
-
-Training sequence is in the article:
 
 Notes:
 
