@@ -41,24 +41,29 @@ Training steps:
 
 1. Download Instacart dataset
 
+this just what instacart asks to put. 
+
+“The Instacart Online Grocery Shopping Dataset 2017”, Accessed from https://www.instacart.com/datasets/grocery-shopping-2017 on Retrieved 08-2018
+
+please follow papers, dataset is available as part of Kaggle competition at https://www.kaggle.com/c/instacart-market-basket-analysis/data
+
 2. Prepare tfrecords train and test data
 
 python prepare_data.py
 
-There problem with this data, it is hard to make is reasonably even. Starting date of customer shopping sequence is random, but aligned with day of week. Next dates are calculated as per days between shopping. Randon it taken from an interval. Once these dates are taken, over volume of all shopping reaches some maximum and then does down. So this how training data looks. I selected some grocery items from products list. 
+There problem with this data, it is hard to make is reasonably even. Starting date of customer shopping sequence is random, but aligned with day of week. Next dates are calculated iusing days between shopping. Random date is picked from an dates interval. Once all these dates are calculated, volume of all shopping reaches some maximum and then does down. This is how training data looks like. I selected grocery only items from products list. 
 
-3. Train
+3. Training
 
-When training see critic and actor and reward convergence. Also, at the end actor average should be close to the sales 0.1 == 0.1
+When training see critic and actor and reward convergence. Also, at the end, replenishment average should be close to the sales 0.1 == 0.1
 
 python training.py --batch_size=1024 --waste=0.05 --action=TRAIN --train_episodes=20000 --output_dir checkpoints
 
 I consider waste should be 10% per day so 0.025 per timeinterval (just tried 0.05 here)
 
-
 4. Evaluation
 
-I did't evaluate. But see this output: there shouldn't be stockouts or overstocks and inventory should be as low.
+I did't evaluate. But see this output: there shouldn't be stockouts or overstocks and inventory should be as low ax possible.
 
 ![output sample](samples/curves/data_prep_cell_12_output_0.png "Sample inventory and replenishment dynamics")
 
@@ -66,6 +71,6 @@ i5. Prediction
 
 time python training.py --action=PREDICT --output_dir checkpoints
 
-This will produce output.csv with metrics for each timestep
+This will produce output.csv with metrics for each timestep. if taking one product and following it over time, metrics will look like this
 
 ![output sample](samples/curves/data_prep_cell_12_output_0.png "Sample inventory and replenishment dynamics")
