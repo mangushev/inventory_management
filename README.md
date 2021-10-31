@@ -41,7 +41,7 @@ Training steps:
 
 1. Download Instacart dataset
 
-this just what instacart asks to put. 
+this is just what instacart asks to put. 
 
 “The Instacart Online Grocery Shopping Dataset 2017”, Accessed from https://www.instacart.com/datasets/grocery-shopping-2017 on Retrieved 08-2018
 
