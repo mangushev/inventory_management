@@ -52,9 +52,9 @@ There problem with this data, it is hard to make is reasonably even. Starting da
 
 When training see critic and actor and reward convergence. Also, at the end, replenishment average should be close to the sales 0.1 == 0.1
 
-python training.py --batch_size=1024 --waste=0.05 --action=TRAIN --train_episodes=20000 --output_dir checkpoints
+python training.py --action=TRAIN --train_episodes=8000 --output_dir checkpoints
 
-I consider waste should be 10% per day so 0.025 per timeinterval (just tried 0.05 here)
+I consider waste should be 10% per day so 0.025 per timeinterval. Waste parameter is what pushes inventory level down, so I am still not sure what the value is right 
 
 4. Evaluation
 

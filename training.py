@@ -134,6 +134,9 @@ def waste(x):
    return FLAGS.waste * x
 
 def quantile(x, q):
+
+  return np.quantile(x, q)
+
   x = tf.sort(x, direction='ASCENDING')
   pos = q * tf.cast(tf.size(x), tf.float32)
   floor_pos = tf.floor(pos)
@@ -187,6 +190,7 @@ def predict():
 
   with tf.io.gfile.GFile(FLAGS.output_file, "w") as writer:
     for sales_record in parsed_dataset:
+      
       sales = tf.divide(sales_record['sales'], capacity)
 
       q = waste(x)
@@ -195,7 +199,6 @@ def predict():
 
       policy_probs = actor(s)
       policy_mask = tf.one_hot(tf.math.argmax(policy_probs, axis=-1), FLAGS.num_actions)
-      policy_selected = tf.boolean_mask(policy_probs, policy_mask)
       action_space = tf.tile([[0, 0.005, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.03, 0.04, 0.08, 0.12, 0.2, 0.5, 1]], [FLAGS.num_products, 1])
       u = tf.boolean_mask(action_space, policy_mask)
 
@@ -205,21 +208,12 @@ def predict():
 
       stockout = tf.math.minimum(0, x_u - sales)
 
-      #writer.write("stock:" + ','.join(  list(map(str,   tf.cast(tf.math.round(x*capacity), tf.int32).numpy()    ))    ) + "\n")
-      #writer.write("action:" + ','.join(  list(map(str,   tf.cast(tf.math.round(u*capacity), tf.int32).numpy()    ))    ) + "\n")
-      #writer.write("overstock:" + ','.join(  list(map(str,   tf.cast(tf.math.round(overstock*capacity), tf.int32).numpy()    ))    ) + "\n")
-      #writer.write("sales:" + ','.join(  list(map(str,   tf.cast(tf.math.round(sales*capacity), tf.int32).numpy()    ))    ) + "\n")
-      #writer.write("stockout:" + ','.join(  list(map(str,   tf.cast(tf.math.round(stockout*capacity), tf.int32).numpy()    ))    ) + "\n")
-      #writer.write("capacity:" + ','.join(  list(map(str,   tf.cast(tf.math.round(capacity), tf.int32).numpy()    ))    ) + "\n")
-
       writer.write("stock:" + ','.join(  list(map(str,   x.numpy()    ))    ) + "\n")
       writer.write("action:" + ','.join(  list(map(str,   u.numpy()    ))    ) + "\n")
       writer.write("overstock:" + ','.join(  list(map(str,   overstock.numpy()    ))    ) + "\n")
       writer.write("sales:" + ','.join(  list(map(str,   sales.numpy()    ))    ) + "\n")
       writer.write("stockout:" + ','.join(  list(map(str,   stockout.numpy()    ))    ) + "\n")
       writer.write("capacity:" + ','.join(  list(map(str,   (capacity/capacity).numpy()    ))    ) + "\n")
-
-      x_u = tf.math.minimum(1, x + u)
 
       x = tf.math.maximum(0, x_u - sales)
 
@@ -410,7 +404,7 @@ def train():
         tf.print("delta:", global_step, tf.reduce_mean(delta, keepdims=False), output_stream=sys.stderr, summarize=-1)
 
         #(t*p) --> (1)
-        critic_loss = 0.5*tf.reduce_mean(tf.math.square(tf.stop_gradient(y) - v), keepdims=False)
+        critic_loss = 0.5*tf.reduce_mean(tf.math.square(delta), keepdims=False)
         tf.print("critic loss:", global_step, critic_loss, output_stream=sys.stderr, summarize=-1)
 
         if global_step == 0:
@@ -419,7 +413,7 @@ def train():
 
         #(t*p, n), (t*p, n) --> (t*p) --> (1)
         entropy_p = cross_entropy(p_batch, p_batch)
-        tf.print("entropy adjusted:", global_step, 0.01*entropy_p, output_stream=sys.stderr, summarize=-1)
+        tf.print("entropy adjusted:", global_step, FLAGS.entropy_coefficient*entropy_p, output_stream=sys.stderr, summarize=-1)
 
         if FLAGS.algorithm == 'A2C':
           #(t*p), (t*p), (1) --> (1), (1) --> (1)
@@ -501,13 +495,13 @@ if __name__ == '__main__':
             help='How many actions for store replenishment.')
     parser.add_argument('--hidden_size', type=int, default=32,
             help='Actor and Critic layers hidden size.')
-    parser.add_argument('--entropy_coefficient', type=float, default=0.01,
+    parser.add_argument('--entropy_coefficient', type=float, default=0.001,
             help='Applied to entropy regularizing value for actor loss.')
     parser.add_argument('--gamma', type=float, default=0.99,
             help='Discount in future rewards.')
     parser.add_argument('--algorithm', default='A2C', choices=['A2C','A2C_mod','PPO'],
             help='Learning algorithm for critic and actor.')
-    parser.add_argument('--waste', type=float, default=0.3,
+    parser.add_argument('--waste', type=float, default=0.025,
             help='Waste of store stock for time period.')
     parser.add_argument('--num_experience_episodes', type=int, default=5,
             help='How many episodes to collect experience before starting training.')
@@ -521,7 +515,7 @@ if __name__ == '__main__':
             help='Enable excessive variables screen outputs.')
     parser.add_argument('--zero_inventory', type=float, default=1e-5,
             help='Consider as zero inventory if less than that.')
-    parser.add_argument('--batch_size', type=int, default=128,
+    parser.add_argument('--batch_size', type=int, default=32,
             help='Batch size.')
     parser.add_argument('--action', default='PREDICT', choices=['TRAIN','EVALUATE','PREDICT'],
             help='An action to execure.')
