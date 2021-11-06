@@ -16,11 +16,6 @@ https://ala2020.vub.ac.be/papers/ALA2020_paper_5.pdf
 
 https://arxiv.org/abs/2006.04037
 
-There are variety of papers on reinforcement learning:
-
-- A2C algorithm
-- PPO algorithm
-
 Description:
 
 Supply chain can have many objectives to achieve optimal metrics: lowest possible inventory level without having stockouts. This reduces amount of thrown away items. Another objective is to make quantity of items across all products as even as possible. Other problems with solution in the paper is addressing both stores and warehouses and different lead times. I have not coded this yet. Beside this, I saw in other papers could be some optimal prices in the store.   
@@ -29,14 +24,14 @@ This is reinforcement learnig problem and it is implemented in a actor critic st
 
 Notes:
 
-- Only A2C with 1024 batch size works for now
+- Only A2C and PPO algorithms work for now
 - I have not implemented any baseline supply chain algorith to compare performance
 
 Training steps:
 
 1. Download Instacart dataset
 
-this is just what instacart asks to put. 
+this is just what instacart asks to put regarding dataset.
 
 “The Instacart Online Grocery Shopping Dataset 2017”, Accessed from https://www.instacart.com/datasets/grocery-shopping-2017 on Retrieved 08-2018
 
@@ -52,9 +47,11 @@ There problem with this data, it is hard to make is reasonably even. Starting da
 
 When training see critic and actor and reward convergence. Also, at the end, replenishment average should be close to the sales 0.1 == 0.1
 
-python training.py --action=TRAIN --train_episodes=8000 --output_dir checkpoints
+python training.py --action=TRAIN --output_dir checkpoints
 
-I consider waste should be 10% per day so 0.025 per timeinterval. Waste parameter is what pushes inventory level down, so I am still not sure what the value is right 
+Waste parameter is what pushes inventory level down, so I am still not sure what the value is right, but for algorithms to work I put 0.20 so this drives invetory down to 15% 
+
+![output sample](samples/curves//work/workspace/supply_chain/multi-product_multi-node_inventory_management/current/notebooks/data_prep-a2c_cell_1_output_0.png "A2C rewards")
 
 4. Evaluation
 
