@@ -51,11 +51,14 @@ python training.py --action=TRAIN --output_dir checkpoints
 
 Waste parameter is what pushes inventory level down, so I am still not sure what the value is right, but for algorithms to work I put 0.20 so this drives invetory down to 15% 
 
+Rewards: 
 ![output sample](samples/curves/data_prep-a2c_cell_1_output_0.png "A2C rewards")
 
+Inventory: 
+![output sample](samples/curves/data_prep-a2c_cell_6_output_0.png "A2C rewards")
 4. Evaluation
 
-I did't evaluate. But see this output: there shouldn't be stockouts or overstocks and inventory should be as low ax possible.
+I did't evaluate. But see this output: there shouldn't be stockouts or overstocks and inventory should be as low ax possible. This is how it looks for a sample product:
 
 ![output sample](samples/curves/data_prep_cell_12_output_0.png "Sample inventory and replenishment dynamics")
 
