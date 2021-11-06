@@ -51,7 +51,7 @@ python training.py --action=TRAIN --output_dir checkpoints
 
 Waste parameter is what pushes inventory level down, so I am still not sure what the value is right, but for algorithms to work I put 0.20 so this drives invetory down to 15% 
 
-![output sample](samples/curves//work/workspace/supply_chain/multi-product_multi-node_inventory_management/current/notebooks/data_prep-a2c_cell_1_output_0.png "A2C rewards")
+![output sample](samples/curves/data_prep-a2c_cell_1_output_0.png "A2C rewards")
 
 4. Evaluation
 
