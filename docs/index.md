@@ -1,4 +1,4 @@
-# MTAD-GAT implementation
+# Inventory management for supply chain
 
 Please visit <a href="https://github.com/mangushev/inventory_management">repository</a> to review sources.
 
